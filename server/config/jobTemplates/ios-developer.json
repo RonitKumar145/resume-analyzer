@@ -1,0 +1,35 @@
+{
+    "title": "iOS Developer",
+
+    "requiredSkills": [
+        "swift",
+        "xcode",
+        "ios",
+        "git",
+        "rest api"
+    ],
+
+    "preferredSkills": [
+        "swiftui",
+        "uikit",
+        "firebase",
+        "core data"
+    ],
+
+    "education": [
+        "b.tech",
+        "b.e",
+        "bca",
+        "mca"
+    ],
+
+    "experience": "1+ years",
+
+    "responsibilities": [
+        "develop ios applications",
+        "api integration",
+        "debugging",
+        "performance optimization",
+        "testing"
+    ]
+}

@@ -1,0 +1,36 @@
+{
+    "title": "Frontend Engineer",
+
+    "requiredSkills": [
+        "html",
+        "css",
+        "javascript",
+        "typescript",
+        "react",
+        "git"
+    ],
+
+    "preferredSkills": [
+        "next.js",
+        "redux",
+        "tailwind css",
+        "figma"
+    ],
+
+    "education": [
+        "b.tech",
+        "b.e",
+        "bca",
+        "mca"
+    ],
+
+    "experience": "1+ years",
+
+    "responsibilities": [
+        "develop ui",
+        "responsive design",
+        "optimize performance",
+        "debug",
+        "collaborate"
+    ]
+}

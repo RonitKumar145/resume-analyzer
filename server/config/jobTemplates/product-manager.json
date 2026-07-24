@@ -1,0 +1,34 @@
+{
+    "title": "Product Manager",
+
+    "requiredSkills": [
+        "product strategy",
+        "roadmapping",
+        "agile",
+        "scrum",
+        "jira"
+    ],
+
+    "preferredSkills": [
+        "figma",
+        "analytics",
+        "sql",
+        "communication"
+    ],
+
+    "education": [
+        "b.tech",
+        "mba",
+        "bba"
+    ],
+
+    "experience": "2+ years",
+
+    "responsibilities": [
+        "define product vision",
+        "manage backlog",
+        "coordinate teams",
+        "analyze requirements",
+        "stakeholder communication"
+    ]
+}

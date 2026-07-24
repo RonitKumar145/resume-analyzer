@@ -1,0 +1,38 @@
+{
+    "title": "Java Developer",
+
+    "requiredSkills": [
+        "java",
+        "spring boot",
+        "sql",
+        "git",
+        "rest api",
+        "oop"
+    ],
+
+    "preferredSkills": [
+        "hibernate",
+        "maven",
+        "docker",
+        "aws",
+        "postgresql"
+    ],
+
+    "education": [
+        "b.tech",
+        "b.e",
+        "bca",
+        "mca",
+        "computer science"
+    ],
+
+    "experience": "1+ years",
+
+    "responsibilities": [
+        "develop backend services",
+        "build rest apis",
+        "database integration",
+        "debug",
+        "testing"
+    ]
+}

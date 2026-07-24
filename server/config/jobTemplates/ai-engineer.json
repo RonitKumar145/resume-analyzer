@@ -1,0 +1,34 @@
+{
+    "title": "AI Engineer",
+
+    "requiredSkills": [
+        "python",
+        "machine learning",
+        "deep learning",
+        "tensorflow",
+        "pytorch"
+    ],
+
+    "preferredSkills": [
+        "llms",
+        "langchain",
+        "vector databases",
+        "hugging face"
+    ],
+
+    "education": [
+        "b.tech",
+        "m.tech",
+        "msc"
+    ],
+
+    "experience": "2+ years",
+
+    "responsibilities": [
+        "build ai applications",
+        "train models",
+        "optimize models",
+        "deploy ai systems",
+        "research"
+    ]
+}

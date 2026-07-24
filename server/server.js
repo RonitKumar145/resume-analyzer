@@ -1,23 +1,32 @@
-import express from "express";
-import cors from "cors";
-import dotenv from "dotenv";
-import connectDB from "./config/db.js";
+import express from "express"
+import cors from "cors"
+import dotenv from "dotenv"
 
-dotenv.config();
+import connectDB from "./config/db.js"
+import resumeRoutes from "./routes/resumeRoutes.js"
+import jobTemplateRoutes from "./routes/jobTemplateRoutes.js";
 
-connectDB();
+dotenv.config()
 
-const app = express();
+connectDB()
 
-app.use(cors());
-app.use(express.json());
+const app = express()
 
-app.get("/", (req, res) => {
-  res.send("Resume Analyzer API Running...");
-});
+app.use(cors())
+app.use(express.json())
 
-const PORT = process.env.PORT || 5000;
+app.use("/api/resume", resumeRoutes)
+app.use("/api/job-roles", jobTemplateRoutes);
+app.get("/", (req,res) => {
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+    res.send("Resume Analyzer API Running...")
+
+})
+
+const PORT = process.env.PORT || 5000
+
+app.listen(PORT,()=>{
+
+    console.log(`Server running on port ${PORT}`)
+
+})

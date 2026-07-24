@@ -1,0 +1,39 @@
+{
+    "title": "MERN Stack Developer",
+
+    "requiredSkills": [
+        "html",
+        "css",
+        "javascript",
+        "react",
+        "node.js",
+        "express",
+        "mongodb",
+        "git"
+    ],
+
+    "preferredSkills": [
+        "redux",
+        "tailwind css",
+        "docker",
+        "aws",
+        "redis"
+    ],
+
+    "education": [
+        "b.tech",
+        "b.e",
+        "bca",
+        "mca"
+    ],
+
+    "experience": "1+ years",
+
+    "responsibilities": [
+        "develop web applications",
+        "build apis",
+        "database management",
+        "responsive design",
+        "deployment"
+    ]
+}

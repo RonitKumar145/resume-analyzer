@@ -1,0 +1,35 @@
+{
+    "title": "React Developer",
+
+    "requiredSkills": [
+        "html",
+        "css",
+        "javascript",
+        "react",
+        "git"
+    ],
+
+    "preferredSkills": [
+        "typescript",
+        "redux",
+        "next.js",
+        "tailwind css"
+    ],
+
+    "education": [
+        "b.tech",
+        "b.e",
+        "bca",
+        "mca"
+    ],
+
+    "experience": "1+ years",
+
+    "responsibilities": [
+        "develop ui",
+        "component development",
+        "responsive design",
+        "performance optimization",
+        "testing"
+    ]
+}

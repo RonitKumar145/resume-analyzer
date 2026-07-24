@@ -1,0 +1,36 @@
+{
+    "title": "Backend Engineer",
+
+    "requiredSkills": [
+        "node.js",
+        "express",
+        "mongodb",
+        "sql",
+        "rest api",
+        "git"
+    ],
+
+    "preferredSkills": [
+        "docker",
+        "redis",
+        "aws",
+        "postgresql"
+    ],
+
+    "education": [
+        "b.tech",
+        "b.e",
+        "bca",
+        "mca"
+    ],
+
+    "experience": "1+ years",
+
+    "responsibilities": [
+        "build apis",
+        "database design",
+        "authentication",
+        "testing",
+        "deployment"
+    ]
+}

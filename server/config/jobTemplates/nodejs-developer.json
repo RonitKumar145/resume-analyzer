@@ -1,0 +1,36 @@
+{
+    "title": "Node.js Developer",
+
+    "requiredSkills": [
+        "node.js",
+        "express",
+        "mongodb",
+        "javascript",
+        "rest api",
+        "git"
+    ],
+
+    "preferredSkills": [
+        "docker",
+        "redis",
+        "aws",
+        "postgresql"
+    ],
+
+    "education": [
+        "b.tech",
+        "b.e",
+        "bca",
+        "mca"
+    ],
+
+    "experience": "1+ years",
+
+    "responsibilities": [
+        "build apis",
+        "authentication",
+        "database integration",
+        "testing",
+        "deployment"
+    ]
+}

@@ -1,0 +1,36 @@
+{
+    "title": "DevOps Engineer",
+
+    "requiredSkills": [
+        "docker",
+        "kubernetes",
+        "jenkins",
+        "aws",
+        "linux",
+        "git"
+    ],
+
+    "preferredSkills": [
+        "terraform",
+        "ansible",
+        "github actions",
+        "azure",
+        "gcp"
+    ],
+
+    "education": [
+        "b.tech",
+        "b.e",
+        "computer science"
+    ],
+
+    "experience": "2+ years",
+
+    "responsibilities": [
+        "ci/cd",
+        "deployment",
+        "infrastructure",
+        "monitoring",
+        "automation"
+    ]
+}

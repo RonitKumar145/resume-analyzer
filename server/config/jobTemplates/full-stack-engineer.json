@@ -1,0 +1,41 @@
+{
+    "title": "Full Stack Engineer",
+
+    "requiredSkills": [
+        "html",
+        "css",
+        "javascript",
+        "react",
+        "node.js",
+        "express",
+        "mongodb",
+        "git",
+        "rest api"
+    ],
+
+    "preferredSkills": [
+        "typescript",
+        "docker",
+        "aws",
+        "redis",
+        "next.js"
+    ],
+
+    "education": [
+        "b.tech",
+        "b.e",
+        "bca",
+        "mca"
+    ],
+
+    "experience": "1+ years",
+
+    "responsibilities": [
+        "develop frontend",
+        "develop backend",
+        "design database",
+        "build apis",
+        "debug",
+        "deploy"
+    ]
+}

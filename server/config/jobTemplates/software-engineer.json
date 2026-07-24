@@ -1,0 +1,43 @@
+{
+    "title": "Software Engineer",
+
+    "requiredSkills": [
+        "java",
+        "python",
+        "c++",
+        "javascript",
+        "git",
+        "sql",
+        "data structures",
+        "algorithms",
+        "oop"
+    ],
+
+    "preferredSkills": [
+        "docker",
+        "aws",
+        "linux",
+        "mongodb",
+        "postgresql"
+    ],
+
+    "education": [
+        "b.tech",
+        "b.e",
+        "bca",
+        "mca",
+        "computer science"
+    ],
+
+    "experience": "1+ years",
+
+    "responsibilities": [
+        "design",
+        "develop",
+        "test",
+        "debug",
+        "maintain",
+        "optimize",
+        "collaborate"
+    ]
+}

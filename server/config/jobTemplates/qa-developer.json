@@ -1,0 +1,35 @@
+{
+    "title": "QA Engineer",
+
+    "requiredSkills": [
+        "manual testing",
+        "automation testing",
+        "selenium",
+        "jira",
+        "git"
+    ],
+
+    "preferredSkills": [
+        "cypress",
+        "playwright",
+        "postman",
+        "jest"
+    ],
+
+    "education": [
+        "b.tech",
+        "b.e",
+        "bca",
+        "mca"
+    ],
+
+    "experience": "1+ years",
+
+    "responsibilities": [
+        "write test cases",
+        "bug reporting",
+        "regression testing",
+        "automation",
+        "quality assurance"
+    ]
+}

@@ -1,0 +1,35 @@
+{
+    "title": "Data Analyst",
+
+    "requiredSkills": [
+        "sql",
+        "excel",
+        "python",
+        "power bi",
+        "tableau"
+    ],
+
+    "preferredSkills": [
+        "pandas",
+        "numpy",
+        "statistics",
+        "mysql"
+    ],
+
+    "education": [
+        "b.tech",
+        "b.e",
+        "bsc",
+        "msc"
+    ],
+
+    "experience": "1+ years",
+
+    "responsibilities": [
+        "data analysis",
+        "dashboard creation",
+        "report generation",
+        "data visualization",
+        "business insights"
+    ]
+}

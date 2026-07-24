@@ -1,0 +1,36 @@
+{
+    "title": "Android Developer",
+
+    "requiredSkills": [
+        "java",
+        "kotlin",
+        "android studio",
+        "git",
+        "rest api",
+        "sqlite"
+    ],
+
+    "preferredSkills": [
+        "firebase",
+        "jetpack compose",
+        "room",
+        "mvvm"
+    ],
+
+    "education": [
+        "b.tech",
+        "b.e",
+        "bca",
+        "mca"
+    ],
+
+    "experience": "1+ years",
+
+    "responsibilities": [
+        "develop android apps",
+        "api integration",
+        "bug fixing",
+        "performance optimization",
+        "testing"
+    ]
+}

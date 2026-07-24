@@ -1,0 +1,35 @@
+{
+    "title": "Cloud Engineer",
+
+    "requiredSkills": [
+        "aws",
+        "azure",
+        "gcp",
+        "linux",
+        "docker",
+        "networking"
+    ],
+
+    "preferredSkills": [
+        "terraform",
+        "kubernetes",
+        "jenkins",
+        "python"
+    ],
+
+    "education": [
+        "b.tech",
+        "b.e",
+        "computer science"
+    ],
+
+    "experience": "2+ years",
+
+    "responsibilities": [
+        "cloud deployment",
+        "cloud security",
+        "infrastructure management",
+        "monitoring",
+        "cost optimization"
+    ]
+}

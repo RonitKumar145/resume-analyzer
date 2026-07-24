@@ -1,0 +1,35 @@
+{
+    "title": "Data Scientist",
+
+    "requiredSkills": [
+        "python",
+        "sql",
+        "pandas",
+        "numpy",
+        "machine learning"
+    ],
+
+    "preferredSkills": [
+        "tensorflow",
+        "pytorch",
+        "scikit-learn",
+        "statistics"
+    ],
+
+    "education": [
+        "b.tech",
+        "m.tech",
+        "msc",
+        "computer science"
+    ],
+
+    "experience": "2+ years",
+
+    "responsibilities": [
+        "build predictive models",
+        "data preprocessing",
+        "feature engineering",
+        "model evaluation",
+        "data visualization"
+    ]
+}

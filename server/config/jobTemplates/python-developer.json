@@ -1,0 +1,37 @@
+{
+    "title": "Python Developer",
+
+    "requiredSkills": [
+        "python",
+        "django",
+        "flask",
+        "sql",
+        "git",
+        "rest api"
+    ],
+
+    "preferredSkills": [
+        "fastapi",
+        "docker",
+        "aws",
+        "postgresql",
+        "redis"
+    ],
+
+    "education": [
+        "b.tech",
+        "b.e",
+        "bca",
+        "mca"
+    ],
+
+    "experience": "1+ years",
+
+    "responsibilities": [
+        "develop backend services",
+        "api development",
+        "database integration",
+        "automation",
+        "testing"
+    ]
+}
