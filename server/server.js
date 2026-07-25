@@ -13,15 +13,15 @@ connectDB()
 const app = express()
 
 const allowedOrigins = [
+    "https://resume-analyzer-ronit-three.vercel.app",
+    "https://resume-analyzer-coral-three.vercel.app",
     "http://localhost:5173",
     "http://localhost:3000",
-    "https://resume-analyzer-coral-three.vercel.app",
     process.env.CLIENT_URL,
 ].filter(Boolean);
 
 const corsOptions = {
     origin: (origin, callback) => {
-        // Allow requests with no origin (like mobile apps, curl, or server-to-server)
         if (!origin) return callback(null, true);
 
         const cleanOrigin = origin.trim().replace(/\/$/, "");
@@ -30,7 +30,7 @@ const corsOptions = {
         if (isAllowed) {
             callback(null, true);
         } else {
-            callback(null, false);
+            callback(new Error("Not allowed by CORS"));
         }
     },
     credentials: true,
