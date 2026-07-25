@@ -112,18 +112,27 @@ The application currently supports the following predefined roles:
 
 - Node.js
 - Express.js
-- Multer
-- pdf-parse
+- Multer (In-Memory Buffer Storage)
+- pdfjs-dist / pdf-parse
 
 ## Database
 
 - MongoDB Atlas
+
+## Optimization & Performance
+
+- Sub-1.5s Processing Latency (In-Memory Buffer Pipeline)
+- Pre-Compiled Static Regex Patterns & Skill Dictionaries
+- 3-Page Max Extraction Limit
+- Non-Blocking Asynchronous DB Operations
+- 5MB Strict Size Limit & PDF Mimetype Enforcement
 
 ## Deployment
 
 - Frontend – Vercel
 - Backend – Render
 - Database – MongoDB Atlas
+
 
 ---
 
@@ -220,9 +229,16 @@ Compare Resume with Job Description
 Generate Analysis Report
 ```
 
-The uploaded resume is processed using the **pdf-parse** library to extract readable text.
+The uploaded resume is processed in RAM using **in-memory buffers (`multer.memoryStorage`)** and parsed via high-performance PDF extraction capped to a **maximum of 3 pages**.
+
+### High-Performance Backend Optimizations
+- **In-Memory Storage Buffer**: Eliminates ephemeral disk I/O latency completely for cloud platforms (Render/Vercel).
+- **Pre-Compiled Regex Engine**: Static patterns (emails, phones, links, degrees, job titles) and skill library dictionaries are pre-compiled at server load time rather than re-instantiated on every request.
+- **Non-Blocking Architecture**: HTTP JSON analysis response is returned immediately to the client (<1.5s target execution) while offloading background logging asynchronously.
+- **Strict Guardrails**: Enforces a 5MB maximum file limit and `application/pdf` mimetype validation with clean error boundaries.
 
 The extracted content is converted into structured data containing:
+
 
 - Contact Information
 - Education
@@ -364,8 +380,8 @@ resume-analyzer/
 │   ├── routes/
 │   ├── services/
 │   ├── utils/
-│   ├── uploads/
 │   └── server.js
+
 │
 └── README.md
 ```
