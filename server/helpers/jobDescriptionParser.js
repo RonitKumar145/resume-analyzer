@@ -4,6 +4,7 @@ import {
 } from "../config/atsConfig.js";
 
 const EXPERIENCE_REGEX = /\b(\d+\+?|\d+\s*-\s*\d+)\s*(years?|yrs?)\b/i;
+const TITLE_REGEX = /\b(software engineer|software developer|frontend developer|frontend engineer|backend developer|backend engineer|full stack developer|full-stack engineer|web developer|mobile developer|android developer|ios developer|ai engineer|machine learning engineer|data scientist|data analyst|devops engineer|cloud engineer|qa engineer|ui\/ux designer|product manager)\b/i;
 
 const PRECOMPILED_JD_SKILLS = skillLibrary.map(skill => ({
     name: skill.name,
@@ -21,10 +22,13 @@ const RESPONSIBILITY_WORDS = [
 ];
 
 const parseJobDescription = (jobDescription = "") => {
-
     const jd = jobDescription.toLowerCase();
 
+    const titleMatch = jobDescription.match(TITLE_REGEX);
+
     const parsedJob = {
+        title: titleMatch ? titleMatch[0] : "Custom Job Description",
+        isCustom: true,
         requiredSkills: [],
         preferredSkills: [],
         education: [],
@@ -75,4 +79,4 @@ const parseJobDescription = (jobDescription = "") => {
     return parsedJob;
 };
 
-export default parseJobDescription;
+export default parseJobDescription;

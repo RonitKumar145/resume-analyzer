@@ -22,6 +22,9 @@ const calculateATSScore = (
     const projects = checkProjects(parsedResume);
     const quality = checkResumeQuality(parsedResume);
 
+    // Attach experience details to parsedResume for comparison helper
+    parsedResume.experienceDetails = experience.details;
+
     /*
         ATS Score Weights
         -----------------
@@ -134,14 +137,12 @@ const calculateATSScore = (
     return {
         score: totalScore,
         grade,
-
         breakdown: weightedBreakdown,
-
         strengths,
-
         improvements,
-
         parsedResume,
+        rawExperienceScore: experience.score,
+        experienceDetails: experience.details
     };
 
 };

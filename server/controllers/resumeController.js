@@ -40,7 +40,8 @@ const uploadResume = async (req, res) => {
         // Compare Resume with Job
         const comparison = compareResumeWithJob(
             atsResult.parsedResume,
-            parsedJob
+            parsedJob,
+            atsResult
         );
 
         // Remove parsedResume internal structure before sending response
