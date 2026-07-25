@@ -11,11 +11,11 @@ const Home = () => {
                 <div className="max-w-7xl mx-auto px-8 py-5 flex justify-between items-center">
 
                     <h1 className="text-2xl font-bold">
-                        AI Resume Analyzer
+                        Resume Analyzer
                     </h1>
 
                     <p className="text-sm text-gray-500">
-                        Dashboard
+
                     </p>
 
                 </div>
