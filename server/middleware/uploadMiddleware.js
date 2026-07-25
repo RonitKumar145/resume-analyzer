@@ -1,45 +1,18 @@
 import multer from "multer"
 
-const storage = multer.diskStorage({
-
-    destination : (req,file,cb) => {
-
-        cb(null,"uploads/")
-
-    },
-
-    filename : (req,file,cb) => {
-
-        const uploadedFileName = `${Date.now()}-${file.originalname}`
-
-        cb(null,uploadedFileName)
-
-    }
-
-})
+const storage = multer.memoryStorage()
 
 const upload = multer({
-
     storage,
-
-    fileFilter : (req,file,cb) => {
-
-        if(file.mimetype === "application/pdf"){
-
-            return cb(null,true)
-
+    fileFilter: (req, file, cb) => {
+        if (file.mimetype === "application/pdf" || file.originalname.toLowerCase().endsWith(".pdf")) {
+            return cb(null, true)
         }
-
         cb(new Error("Only PDF resume files are allowed."))
-
     },
-
-    limits : {
-
-        fileSize : 40 * 1024 * 1024     // 40 MB
-
+    limits: {
+        fileSize: 40 * 1024 * 1024     // 40 MB
     }
-
 })
 
 export default upload

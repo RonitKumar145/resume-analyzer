@@ -1,5 +1,3 @@
-import fs from "fs/promises";
-
 import extractResumeText from "../utils/extractResumeText.js";
 import calculateATSScore from "../services/atsScore.js";
 import parseJobDescription from "../helpers/jobDescriptionParser.js";
@@ -7,22 +5,15 @@ import compareResumeWithJob from "../helpers/resumeComparator.js";
 import loadJobTemplate from "../helpers/loadJobTemplate.js";
 
 const uploadResume = async (req, res) => {
-
-    // Debug logs
-    console.log("========== NEW REQUEST ==========");
-    console.log("req.file:", req.file);
+    console.log("========== NEW RESUME UPLOAD REQUEST ==========");
 
     try {
-
-        if (!req.file) {
-
-            console.log("No file received.");
-
+        if (!req.file || !req.file.buffer) {
+            console.log("No file buffer received.");
             return res.status(400).json({
                 success: false,
-                message: "No resume was uploaded."
+                message: "No valid PDF resume was uploaded."
             });
-
         }
 
         const {
@@ -30,31 +21,22 @@ const uploadResume = async (req, res) => {
             selectedRole = ""
         } = req.body;
 
-        console.log("Request Body:", req.body);
         console.log("Selected Role:", selectedRole);
+        console.log("File Info:", req.file.originalname, `(${req.file.size} bytes)`);
 
-        // Extract Resume Text
-        const resumeText = await extractResumeText(req.file.path);
+        // Extract Resume Text from Memory Buffer
+        const resumeText = await extractResumeText(req.file.buffer);
 
         let parsedJob;
 
         // Load predefined template or parse custom JD
         if (selectedRole) {
-
-            console.log("Using predefined job template.");
-
+            console.log("Using predefined job template for:", selectedRole);
             parsedJob = loadJobTemplate(selectedRole);
-
         } else {
-
-            console.log("Using custom job description.");
-
+            console.log("Parsing custom job description.");
             parsedJob = parseJobDescription(jobDescription);
-
         }
-
-        console.log("Parsed Job:");
-        console.log(parsedJob);
 
         // Calculate ATS Score
         const atsResult = calculateATSScore(
@@ -68,13 +50,10 @@ const uploadResume = async (req, res) => {
             parsedJob
         );
 
-        // Delete uploaded resume
-        await fs.unlink(req.file.path);
-
         // Remove parsedResume before sending response
         const { parsedResume, ...finalATS } = atsResult;
 
-        console.log("Sending Success Response");
+        console.log("Resume processing successful!");
 
         return res.status(200).json({
             success: true,
@@ -85,31 +64,14 @@ const uploadResume = async (req, res) => {
         });
 
     } catch (error) {
-
-        console.error("========== ERROR ==========");
+        console.error("========== ERROR PROCESSING RESUME ==========");
         console.error(error);
-
-        if (req.file) {
-
-            try {
-
-                await fs.unlink(req.file.path);
-
-            } catch (err) {
-
-                console.log("Unable to delete uploaded file.");
-
-            }
-
-        }
 
         return res.status(500).json({
             success: false,
-            message: "Something went wrong while processing the resume."
+            message: error.message || "Something went wrong while processing the resume."
         });
-
     }
-
 };
 
 export default uploadResume;

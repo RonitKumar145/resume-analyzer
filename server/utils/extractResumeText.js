@@ -1,35 +1,35 @@
-
-import fs from "fs/promises"
 import { getDocument } from "pdfjs-dist/legacy/build/pdf.mjs"
+import fs from "fs/promises"
 
-const extractResumeText = async (filePath) => {
+const extractResumeText = async (fileInput) => {
+    let resumeBuffer;
 
-    const resumeBuffer = await fs.readFile(filePath)
+    if (Buffer.isBuffer(fileInput)) {
+        resumeBuffer = fileInput;
+    } else if (fileInput && fileInput.buffer) {
+        resumeBuffer = fileInput.buffer;
+    } else if (typeof fileInput === "string") {
+        resumeBuffer = await fs.readFile(fileInput);
+    } else {
+        throw new Error("Invalid file input provided for PDF extraction.");
+    }
 
     const pdfDocument = await getDocument({
+        data: new Uint8Array(resumeBuffer)
+    }).promise;
 
-        data : new Uint8Array(resumeBuffer)
+    let extractedText = "";
 
-    }).promise
-
-    let extractedText = ""
-
-    for(let pageNumber = 1; pageNumber <= pdfDocument.numPages; pageNumber++){
-
-        const page = await pdfDocument.getPage(pageNumber)
-
-        const textContent = await page.getTextContent()
+    for (let pageNumber = 1; pageNumber <= pdfDocument.numPages; pageNumber++) {
+        const page = await pdfDocument.getPage(pageNumber);
+        const textContent = await page.getTextContent();
 
         extractedText += textContent.items
             .map(item => item.str)
-            .join(" ")
-
-        extractedText += "\n"
-
+            .join(" ") + "\n";
     }
 
-    return extractedText.trim()
-
+    return extractedText.trim();
 }
 
-export default extractResumeText
+export default extractResumeText;
