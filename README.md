@@ -4,20 +4,27 @@ A full-stack **Resume Analyzer** developed as part of the **Solvrex Pvt. Ltd. Te
 
 ---
 
+## 🚀 Live Demo & Links
+
+- 🌐 **Live Web Application:** [https://resume-analyzer-coral-three.vercel.app/](https://resume-analyzer-coral-three.vercel.app/)
+- ⚡ **Backend REST API:** [https://resume-analyzer-api-c2vm.onrender.com/](https://resume-analyzer-api-c2vm.onrender.com/)
+
+---
+
 ## 📸 Application Preview
 
 <p align="center">
   <img src="./assets/Screenshot%20(216).png" alt="Resume Analyzer Interface" width="100%" style="border-radius: 8px;">
 </p>
 
-
-
 ---
 
 ##  Table of Contents
 
+- [Live Demo & Links](#-live-demo--links)
 - [Application Preview](#-application-preview)
 - [Features](#-features)
+
 - [Supported Job Roles](#-supported-job-roles)
 - [Tech Stack](#-tech-stack)
 - [Project Architecture](#-project-architecture)
@@ -141,9 +148,10 @@ The application currently supports the following predefined roles:
 
 ## Deployment
 
-- Frontend – Vercel
-- Backend – Render
-- Database – MongoDB Atlas
+- **Frontend (Vercel):** [https://resume-analyzer-coral-three.vercel.app/](https://resume-analyzer-coral-three.vercel.app/)
+- **Backend (Render):** [https://resume-analyzer-api-c2vm.onrender.com/](https://resume-analyzer-api-c2vm.onrender.com/)
+- **Database:** MongoDB Atlas
+
 
 
 ---
