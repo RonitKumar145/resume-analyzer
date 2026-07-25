@@ -51,6 +51,11 @@ app.use("/resume", resumeRoutes)
 app.use("/api/job-roles", jobTemplateRoutes);
 app.use("/job-roles", jobTemplateRoutes);
 
+// Health Check Endpoint
+app.get(["/health", "/api/health"], (req, res) => {
+    res.status(200).json({ status: "ok", timestamp: new Date().toISOString() });
+});
+
 app.get("/", (req, res) => {
     res.send("Resume Analyzer API Running...")
 })

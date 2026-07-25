@@ -142,7 +142,7 @@ The application currently supports the following predefined roles:
 
 ## Optimization & Performance
 
-- Sub-1.5s Processing Latency (In-Memory Buffer Pipeline)
+- Processing Latency (In-Memory Buffer Pipeline)
 - Pre-Compiled Static Regex Patterns & Skill Dictionaries
 - 3-Page Max Extraction Limit
 - Non-Blocking Asynchronous DB Operations

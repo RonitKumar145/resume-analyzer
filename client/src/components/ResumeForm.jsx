@@ -2,40 +2,127 @@ import { useEffect, useState } from "react";
 import api from "../services/api";
 import ATSResult from "./ATSResult";
 import LoadingScreen from "./LoadingScreen";
-console.log(import.meta.env.VITE_API_URL);
+
+const FALLBACK_ROLES = [
+    { id: "frontend-developer", title: "Frontend Developer (React / Next.js)" },
+    { id: "backend-developer", title: "Backend Developer (Node.js / Express)" },
+    { id: "fullstack-developer", title: "Full Stack Developer (MERN)" },
+    { id: "software-engineer", title: "Software Engineer" },
+    { id: "senior-software-engineer", title: "Senior Software Engineer" },
+    { id: "python-developer", title: "Python / Django Developer" },
+    { id: "java-developer", title: "Java / Spring Boot Developer" },
+    { id: "devops-engineer", title: "DevOps Engineer" },
+    { id: "data-engineer", title: "Data Engineer" },
+    { id: "data-scientist", title: "Data Scientist" },
+    { id: "ml-engineer", title: "Machine Learning Engineer" },
+    { id: "cloud-architect", title: "Cloud Architect (AWS / Azure)" },
+    { id: "cybersecurity-specialist", title: "Cybersecurity Specialist" },
+    { id: "mobile-developer", title: "Mobile App Developer (React Native / Flutter)" },
+    { id: "qa-automation-engineer", title: "QA / Automation Test Engineer" },
+    { id: "product-manager", title: "Product Manager (Tech)" },
+    { id: "system-administrator", title: "System Administrator" },
+    { id: "database-administrator", title: "Database Administrator (SQL / MongoDB)" },
+    { id: "ui-ux-engineer", title: "UI/UX Designer & Engineer" },
+    { id: "tech-lead", title: "Technical Lead / Engineering Manager" },
+];
+
+const getInitialRoles = () => {
+    try {
+        const cached = localStorage.getItem("cached_job_roles");
+        if (cached) {
+            const parsed = JSON.parse(cached);
+            if (Array.isArray(parsed) && parsed.length > 0) {
+                return parsed;
+            }
+        }
+    } catch (err) {
+        console.warn("Failed to load cached job roles from localStorage:", err);
+    }
+    return FALLBACK_ROLES;
+};
+
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const ResumeForm = () => {
     const [resume, setResume] = useState(null);
-    const [roles, setRoles] = useState([]);
+    const [roles, setRoles] = useState(getInitialRoles);
     const [selectedRole, setSelectedRole] = useState("");
     const [jobDescription, setJobDescription] = useState("");
     const [loading, setLoading] = useState(false);
     const [result, setResult] = useState(null);
+
+    const [isColdStart, setIsColdStart] = useState(false);
+    const [noticeMessage, setNoticeMessage] = useState("");
+    const [apiError, setApiError] = useState("");
 
     const [errors, setErrors] = useState({
         resume: "",
         jobDescription: "",
     });
 
-    const [apiError, setApiError] = useState("");
-
     useEffect(() => {
-        fetchRoles();
+        fetchRolesWithRetry();
     }, []);
 
-    const fetchRoles = async () => {
+    const fetchRolesWithRetry = async (isRetry = false) => {
+        const coldStartTimer = setTimeout(() => setIsColdStart(true), 2000);
+
         try {
             const res = await api.get("/job-roles");
+            clearTimeout(coldStartTimer);
+            setIsColdStart(false);
 
-            console.log("Response:", res.data);
+            let rolesData = [];
+            if (res.data && res.data.success && Array.isArray(res.data.roles)) {
+                rolesData = res.data.roles;
+            } else if (Array.isArray(res.data)) {
+                rolesData = res.data;
+            }
 
-          if (res.data.success) {
-            console.log("Roles:", res.data.roles);
-            setRoles(res.data.roles);
-          }
+            if (rolesData.length > 0) {
+                setRoles(rolesData);
+                localStorage.setItem("cached_job_roles", JSON.stringify(rolesData));
+            }
         } catch (error) {
-            console.error("Fetch Roles Error:", error);
-          }
+            clearTimeout(coldStartTimer);
+
+            if (!isRetry) {
+                console.warn("First attempt to fetch job roles failed. Retrying in 5s...");
+                await delay(5000);
+                return fetchRolesWithRetry(true);
+            }
+
+            console.error("Failed to fetch job roles after retry. Retaining fallback roles.", error);
+            setIsColdStart(false);
+            setNoticeMessage("Couldn't reach the server. Using built-in job roles.");
+        }
+    };
+
+    const postResumeUpload = async (formData, isRetry = false) => {
+        const coldStartTimer = setTimeout(() => setIsColdStart(true), 2000);
+
+        try {
+            const response = await api.post("/resume/upload", formData);
+            clearTimeout(coldStartTimer);
+            setIsColdStart(false);
+            setResult(response.data);
+        } catch (error) {
+            clearTimeout(coldStartTimer);
+
+            if (!isRetry) {
+                console.warn("First attempt to analyze resume failed. Retrying in 5s...");
+                setIsColdStart(true);
+                await delay(5000);
+                return postResumeUpload(formData, true);
+            }
+
+            console.error("Analysis failed after retry:", error);
+            setIsColdStart(false);
+            setApiError(
+                error.response?.data?.message ||
+                "Failed to analyze your resume after retrying. Please try again."
+            );
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -63,7 +150,6 @@ const ResumeForm = () => {
         }
 
         const formData = new FormData();
-
         formData.append("resume", resume);
 
         if (selectedRole) {
@@ -73,37 +159,19 @@ const ResumeForm = () => {
         }
 
         try {
-            // Clear validation errors
             setErrors({
                 resume: "",
                 jobDescription: "",
             });
-
-            // Clear previous API error and result, then set loading
             setApiError("");
+            setNoticeMessage("");
             setResult(null);
             setLoading(true);
 
-            const response = await api.post(
-                "/resume/upload",
-                formData
-            );
-
-            setResult(response.data);
-
-        } catch (error) {
-
-            console.error(error);
-
-            setApiError(
-                error.response?.data?.message ||
-                "Failed to analyze your resume. Please try again."
-            );
-
+            await postResumeUpload(formData);
         } finally {
-
             setLoading(false);
-
+            setIsColdStart(false);
         }
     };
 
@@ -135,6 +203,58 @@ const ResumeForm = () => {
                         </p>
                     </div>
 
+                    {/* Cold-Start UX Banner */}
+                    {isColdStart && (
+                        <div
+                            className="
+                                bg-amber-50
+                                border
+                                border-amber-200
+                                text-amber-800
+                                rounded-xl
+                                px-4
+                                py-3
+                                text-sm
+                                flex
+                                items-center
+                                gap-2
+                            "
+                        >
+                            <span>⏳</span>
+                            <span>
+                                The server instance is starting up for the first request. This can take 30–60 seconds...
+                            </span>
+                        </div>
+                    )}
+
+                    {/* Fallback Notice Banner */}
+                    {noticeMessage && (
+                        <div
+                            className="
+                                bg-blue-50
+                                border
+                                border-blue-200
+                                text-blue-800
+                                rounded-xl
+                                px-4
+                                py-3
+                                text-sm
+                                flex
+                                items-center
+                                justify-between
+                            "
+                        >
+                            <span>ℹ️ {noticeMessage}</span>
+                            <button
+                                type="button"
+                                onClick={() => setNoticeMessage("")}
+                                className="text-blue-600 hover:text-blue-800 font-bold text-xs ml-2"
+                            >
+                                ✕
+                            </button>
+                        </div>
+                    )}
+
                     {/* API Error Banner */}
                     {apiError && (
                         <div
@@ -165,7 +285,6 @@ const ResumeForm = () => {
                             onChange={(e) => {
                                 setResume(e.target.files[0]);
 
-                                // Remove resume error immediately
                                 setErrors((prev) => ({
                                     ...prev,
                                     resume: "",
