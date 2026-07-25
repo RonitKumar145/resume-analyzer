@@ -61,6 +61,11 @@ const ResumeForm = () => {
     });
 
     useEffect(() => {
+        // Fire instant background ping on page load to wake up Render immediately
+        api.get("/health").catch(() => {
+            // Silently suppress errors so cold start timeouts don't throw UI errors
+        });
+
         fetchRolesWithRetry();
     }, []);
 
@@ -99,7 +104,7 @@ const ResumeForm = () => {
     };
 
     const postResumeUpload = async (formData, isRetry = false) => {
-        const coldStartTimer = setTimeout(() => setIsColdStart(true), 4500);
+        const coldStartTimer = setTimeout(() => setIsColdStart(true), 7000);
 
         try {
             const response = await api.post("/resume/upload", formData);
