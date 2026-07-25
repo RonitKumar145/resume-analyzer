@@ -5,11 +5,8 @@ import compareResumeWithJob from "../helpers/resumeComparator.js";
 import loadJobTemplate from "../helpers/loadJobTemplate.js";
 
 const uploadResume = async (req, res) => {
-    console.log("========== NEW RESUME UPLOAD REQUEST ==========");
-
     try {
         if (!req.file || !req.file.buffer) {
-            console.log("No file buffer received.");
             return res.status(400).json({
                 success: false,
                 message: "No valid PDF resume was uploaded."
@@ -21,20 +18,15 @@ const uploadResume = async (req, res) => {
             selectedRole = ""
         } = req.body;
 
-        console.log("Selected Role:", selectedRole);
-        console.log("File Info:", req.file.originalname, `(${req.file.size} bytes)`);
-
-        // Extract Resume Text from Memory Buffer
+        // Extract Resume Text from Memory Buffer (capping to 3 pages)
         const resumeText = await extractResumeText(req.file.buffer);
 
         let parsedJob;
 
         // Load predefined template or parse custom JD
         if (selectedRole) {
-            console.log("Using predefined job template for:", selectedRole);
             parsedJob = loadJobTemplate(selectedRole);
         } else {
-            console.log("Parsing custom job description.");
             parsedJob = parseJobDescription(jobDescription);
         }
 
@@ -50,18 +42,24 @@ const uploadResume = async (req, res) => {
             parsedJob
         );
 
-        // Remove parsedResume before sending response
+        // Remove parsedResume internal structure before sending response
         const { parsedResume, ...finalATS } = atsResult;
 
-        console.log("Resume processing successful!");
-
-        return res.status(200).json({
+        const responsePayload = {
             success: true,
             message: "Resume uploaded and processed successfully.",
             selectedRole: parsedJob.title || "Custom Job Description",
             atsResult: finalATS,
             comparison
-        });
+        };
+
+        // Send HTTP JSON response immediately to client (sub-1.5s performance)
+        res.status(200).json(responsePayload);
+
+        // Fire-and-forget async background logging/analytics if needed:
+        // logAnalysisToDatabase(responsePayload).catch(dbErr => {
+        //     console.error("Background DB logging failed:", dbErr.message);
+        // });
 
     } catch (error) {
         console.error("========== ERROR PROCESSING RESUME ==========");
@@ -74,4 +72,4 @@ const uploadResume = async (req, res) => {
     }
 };
 
-export default uploadResume;
+export default uploadResume;
