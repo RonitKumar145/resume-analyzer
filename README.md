@@ -4,8 +4,15 @@ A full-stack **Resume Analyzer** developed as part of the **Solvrex Pvt. Ltd. Te
 
 ---
 
+## 📸 Application Preview
+
+![Resume Analyzer Interface](./assets/dashboard-preview.png)
+
+---
+
 ##  Table of Contents
 
+- [Application Preview](#-application-preview)
 - [Features](#-features)
 - [Supported Job Roles](#-supported-job-roles)
 - [Tech Stack](#-tech-stack)
@@ -22,6 +29,7 @@ A full-stack **Resume Analyzer** developed as part of the **Solvrex Pvt. Ltd. Te
 - [Author](#-author)
 
 ---
+
 
 #  Features
 
