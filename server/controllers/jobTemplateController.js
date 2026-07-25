@@ -5,8 +5,17 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+let cachedRolesList = null;
+
 const getJobRoles = (req, res) => {
     try {
+        if (cachedRolesList) {
+            return res.status(200).json({
+                success: true,
+                roles: cachedRolesList
+            });
+        }
+
         const folderPath = path.join(
             __dirname,
             "..",
@@ -26,6 +35,8 @@ const getJobRoles = (req, res) => {
                 title: data.title
             };
         });
+
+        cachedRolesList = roles;
 
         res.status(200).json({
             success: true,

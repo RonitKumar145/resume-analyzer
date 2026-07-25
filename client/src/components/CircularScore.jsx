@@ -51,14 +51,6 @@ const CircularScore = ({ score = 0 }) => {
                 <p className="text-gray-500 text-sm">
                     /100
                 </p>
-                <p
-                    className="mt-2 text-sm font-semibold"
-                    style={{
-                        color: meta.color,
-                    }}
-                >
-                    {meta.label}
-                </p>
             </div>
         </div>
     );

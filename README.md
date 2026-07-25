@@ -8,6 +8,7 @@ A full-stack **Resume Analyzer** developed as part of the **Solvrex Pvt. Ltd. Te
 
 - 🌐 **Live Web Application:** [https://resume-analyzer-coral-three.vercel.app/](https://resume-analyzer-coral-three.vercel.app/)
 - ⚡ **Backend REST API:** [https://resume-analyzer-api-c2vm.onrender.com/](https://resume-analyzer-api-c2vm.onrender.com/)
+- 🩺 **API Health Check:** [https://resume-analyzer-api-c2vm.onrender.com/health](https://resume-analyzer-api-c2vm.onrender.com/health)
 
 ---
 
@@ -21,7 +22,7 @@ A full-stack **Resume Analyzer** developed as part of the **Solvrex Pvt. Ltd. Te
 
 ##  Table of Contents
 
-- [Live Demo & Links](#-live-demo--links)
+- [Live Demo & Links](#live-demo--links)
 - [Application Preview](#-application-preview)
 - [Features](#-features)
 
@@ -63,10 +64,10 @@ A full-stack **Resume Analyzer** developed as part of the **Solvrex Pvt. Ltd. Te
 ##  ATS Evaluation
 
 - ATS Score (0–100)
-- Resume Grade
+- Resume Grade (Single Source of Truth Scale: Excellent, Good, Average, Needs Improvement)
 - Weighted Score Breakdown
 - Resume Strengths
-- Weaknesses
+- Weaknesses (Target Role & Tech Stack Gap Detection)
 - Actionable Recommendations
 
 ---
@@ -74,11 +75,20 @@ A full-stack **Resume Analyzer** developed as part of the **Solvrex Pvt. Ltd. Te
 ##  Job Matching
 
 - Compare against predefined Software & IT job roles
-- Support for custom Job Descriptions
+- Support for custom Job Descriptions (Dynamic Title & Skill Extraction)
 - Overall Job Match Percentage
 - Skill Match Percentage
 - Matched Skills
 - Missing Skills
+
+---
+
+## ⚡ Production Resilience & UX
+
+- **Instant Warm-Up Ping**: Fires a silent 0-second `/health` request on page load to spin up Render backends before user submission.
+- **Zero-Delay Dropdown Seeding**: Dropdown initializes immediately on mount using `localStorage` cache or a 20-item `FALLBACK_ROLES` array—never renders empty.
+- **Automatic 5s Retries**: Single 5-second automatic retry strategy on network or cold-start timeouts.
+- **Cold-Start Notice Banner**: Displays an informative notice if an operation exceeds the cold-start delay threshold.
 
 ---
 
@@ -127,7 +137,7 @@ The application currently supports the following predefined roles:
 - React.js
 - Vite
 - Tailwind CSS
-- Axios
+- Axios (30s timeout + 5s retry policy)
 
 ## Backend
 
@@ -147,14 +157,13 @@ The application currently supports the following predefined roles:
 - 3-Page Max Extraction Limit
 - Non-Blocking Asynchronous DB Operations
 - 5MB Strict Size Limit & PDF Mimetype Enforcement
+- Single Source of Truth Score Metadata (`scoreUtils.js`)
 
 ## Deployment
 
 - **Frontend (Vercel):** [https://resume-analyzer-coral-three.vercel.app/](https://resume-analyzer-coral-three.vercel.app/)
 - **Backend (Render):** [https://resume-analyzer-api-c2vm.onrender.com/](https://resume-analyzer-api-c2vm.onrender.com/)
 - **Database:** MongoDB Atlas
-
-
 
 ---
 
@@ -163,6 +172,7 @@ The application currently supports the following predefined roles:
 ```text
                  React Frontend
                         │
+       (Instant Background PING /health)
                         │
                  Upload Resume (PDF)
                         │
@@ -172,15 +182,15 @@ The application currently supports the following predefined roles:
           ┌─────────────┴─────────────┐
           │                           │
           ▼                           ▼
-     PDF Text Extraction        Job Role / JD
-        (pdf-parse)               Selection
+     PDF Text Extraction        Job Role / Custom JD
+        (pdf-parse)               Selection & Parsing
           │                           │
           └─────────────┬─────────────┘
                         ▼
                  Resume Parser
                         │
                         ▼
-               ATS Scoring Engine
+           ATS Scoring Engine (50/50 Exp)
                         │
                         ▼
              Resume vs Job Comparison
@@ -242,13 +252,13 @@ Extract PDF Text
 Parse Resume
       │
       ▼
-Calculate ATS Score
+Calculate ATS Score (Role + Tech Stack Experience Check)
       │
       ▼
 Compare Resume with Job Description
       │
       ▼
-Generate Analysis Report
+Generate Analysis Report (Tailored Weaknesses & Recommendations)
 ```
 
 The uploaded resume is processed in RAM using **in-memory buffers (`multer.memoryStorage`)** and parsed via high-performance PDF extraction capped to a **maximum of 3 pages**.
@@ -281,6 +291,7 @@ This modular architecture also allows additional evaluation criteria to be intro
 
 - **Deterministic Rule-Based Framework over External LLMs:** Rather than wrapping a 3rd-party LLM API (which introduces latency, API cost dependencies, rate limits, and non-deterministic scoring variations), I engineered a deterministic rule-based evaluation framework. This guarantees sub-1.5s execution, predictable and explainable scoring, and complete privacy for candidate resume data.
 - **In-Memory Parsing & Performance Optimization:** To optimize the application for serverless and cloud platforms like Render/Vercel, the backend processes PDF buffers directly in memory (`multer.memoryStorage`) with pre-compiled regex dictionaries and 3-page max parsing limits, eliminating ephemeral disk I/O bottlenecks and keeping analysis times under 1.5 seconds.
+- **Cold-Start & Resilient UX Engineering:** Implemented pre-warming health pings, local storage state seeding, 20 fallback role presets, and automated 5-second retries to guarantee zero empty-state dropdowns and resilient operation against sleeping Render free-tier containers.
 
 ---
 
@@ -315,10 +326,10 @@ Evaluates:
 
 ## Experience (25%)
 
-Evaluates:
+Evaluates via a **50/50 Contextual Evaluation Split**:
 
-- Relevant job titles
-- Technologies used
+- **Target Role Relevance (50% = 12.5 pts max)**: Evaluates if candidate job titles match or closely resemble the target role (direct match = 100%, adjacent tech role = 50%, non-tech/sales roles = 0%).
+- **Tools & Tech Stack Context (50% = 12.5 pts max)**: Evaluates depth of required technical tools explicitly mentioned within work experience bullet points.
 - Quantifiable achievements
 - Action verbs
 - Experience duration
@@ -369,6 +380,17 @@ Checks for:
 
 ---
 
+## Unified UI Score Metadata Scale (`scoreUtils.js`)
+
+| Score Range | Grade / Label | Status Color | Description |
+| --- | --- | --- | --- |
+| **85 – 100** | **Excellent** | `Green (#22c55e)` | Excellent match! Your resume is strongly optimized for ATS filters. |
+| **70 – 84** | **Good** | `Amber (#f59e0b)` | Solid resume! A few minor tweaks will make it stand out even more. |
+| **50 – 69** | **Average** | `Orange (#f97316)` | Fair match. Needs targeted keywords and better section structure. |
+| **0 – 49** | **Needs Improvement** | `Red (#ef4444)` | Critical gaps found. Review missing skill keywords and formatting. |
+
+---
+
 This rule-based methodology provides consistent, explainable, and transparent ATS scores while avoiding dependence on external AI APIs.
 
 ---
@@ -399,6 +421,8 @@ resume-analyzer/
 │   │   ├── components/
 │   │   ├── pages/
 │   │   ├── services/
+│   │   ├── utils/
+│   │   │   └── scoreUtils.js
 │   │   ├── assets/
 │   │   └── App.jsx
 │
@@ -457,6 +481,7 @@ npm install
 ```env
 PORT=5000
 MONGO_URI=your_mongodb_connection_string
+CLIENT_URL=https://resume-analyzer-coral-three.vercel.app
 ```
 
 ## Frontend (.env)
@@ -490,6 +515,24 @@ npm run dev
 ---
 
 #  API Endpoints
+
+## Health Check Endpoint
+
+```http
+GET /health
+GET /api/health
+```
+
+### Response (`200 OK`)
+
+```json
+{
+  "status": "ok",
+  "timestamp": "2026-07-25T14:30:00.000Z"
+}
+```
+
+---
 
 ## Upload Resume
 
@@ -544,7 +587,7 @@ The project can be extended with several additional features:
 
 ---
 
-# 👨‍💻 Author
+# 👨💻 Author
 
 **Ronit Kumar**
 
