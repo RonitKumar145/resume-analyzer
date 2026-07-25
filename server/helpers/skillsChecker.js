@@ -1,93 +1,68 @@
-import { skillLibrary } from "../config/atsConfig.js"
+const checkSkills = (parsedResume, requiredSkills = []) => {
 
-const checkSkills = (
+    let score = 0;
 
-    parsedResume,
+    const matchedSkills = parsedResume.skills || [];
 
-    requiredSkills = []
-
-) => {
-
-    let score = 0
-
-    const matchedSkills = parsedResume.skills || []
-
-    const missingSkills = []
-
-    matchedSkills.forEach(skill => {
-
-        const currentSkill = skillLibrary.find(
-
-            item => item.name === skill
-
-        )
-
-        if(currentSkill){
-
-            score += currentSkill.weight
-
-        }
-
-    })
-
-    score = Math.min(score,20)
+    const missingSkills = [];
 
     requiredSkills.forEach(skill => {
 
-        if(
+        const found = matchedSkills.some(
+            resumeSkill =>
+                resumeSkill.toLowerCase() === skill.toLowerCase()
+        );
 
-            !matchedSkills.some(
-
-                resumeSkill =>
-
-                    resumeSkill.toLowerCase() === skill.toLowerCase()
-
-            )
-
-        ){
-
-            missingSkills.push(skill)
-
+        if (!found) {
+            missingSkills.push(skill);
         }
 
-    })
+    });
+
+    const matchedRequired =
+        requiredSkills.length - missingSkills.length;
 
     const jobMatch = requiredSkills.length
+        ? Math.round((matchedRequired / requiredSkills.length) * 100)
+        : 100;
 
-        ? Math.round(
+    // Job Match (12 points)
+    score += Math.round((jobMatch / 100) * 12);
 
-            (
+    // Resume Skill Count (5 points)
+    if (matchedSkills.length >= 15) {
+        score += 5;
+    } else if (matchedSkills.length >= 10) {
+        score += 4;
+    } else if (matchedSkills.length >= 7) {
+        score += 3;
+    } else if (matchedSkills.length >= 4) {
+        score += 2;
+    } else if (matchedSkills.length >= 2) {
+        score += 1;
+    }
 
-                (requiredSkills.length - missingSkills.length)
+    // Perfect Match Bonus (3 points)
+    if (requiredSkills.length && missingSkills.length === 0) {
+        score += 3;
+    }
 
-                /
+    score = Math.min(score, 20);
 
-                requiredSkills.length
-
-            ) * 100
-
-        )
-
-        : null
-
-    return{
-
+    return {
         score,
 
-        details : {
-
+        details: {
             matchedSkills,
-
-            totalSkills : matchedSkills.length
-
+            totalSkills: matchedSkills.length,
+            matchedRequired,
+            requiredSkills: requiredSkills.length,
         },
 
         missingSkills,
+        jobMatch,
+    };
 
-        jobMatch
+};
 
-    }
-
-}
-
-export default checkSkills
+export default checkSkills;

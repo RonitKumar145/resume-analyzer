@@ -1,6 +1,11 @@
 {
+  "name": "resume-analyzer",
+  "scripts": {
+    "copy-img": "node -e \"require('fs').copyFileSync('C:/Users/ASUS/.gemini/antigravity-ide/brain/7a0877f2-2d2d-4dd7-b38c-b66c29e08609/media__1784982409474.png', 'assets/dashboard-preview.png'); console.log('Image copied to assets/dashboard-preview.png');\""
+  },
   "dependencies": {
     "axios": "^1.18.1",
     "react-router-dom": "^7.18.1"
   }
 }
+
