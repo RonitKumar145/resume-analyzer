@@ -12,27 +12,52 @@ connectDB()
 
 const app = express()
 
-app.use(cors({
-    origin:[
-        "http://localhost:5173",
-        process.env.CLIENT_URL,
-    ],
-    credentials:true,
-}))
+const allowedOrigins = [
+    "http://localhost:5173",
+    "http://localhost:3000",
+    "https://resume-analyzer-coral-three.vercel.app",
+    process.env.CLIENT_URL,
+].filter(Boolean);
+
+const corsOptions = {
+    origin: (origin, callback) => {
+        // Allow requests with no origin (like mobile apps, curl, or server-to-server)
+        if (!origin) return callback(null, true);
+
+        const cleanOrigin = origin.trim().replace(/\/$/, "");
+        const isAllowed = allowedOrigins.some(o => o.trim().replace(/\/$/, "") === cleanOrigin);
+
+        if (isAllowed) {
+            callback(null, true);
+        } else {
+            callback(null, false);
+        }
+    },
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"],
+    optionsSuccessStatus: 200,
+};
+
+// Enable CORS middleware and handle preflight OPTIONS requests cleanly across all routes
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
+
 app.use(express.json())
 
+// Support both /api/* routes and direct root path aliases (/job-roles, /resume)
 app.use("/api/resume", resumeRoutes)
+app.use("/resume", resumeRoutes)
+
 app.use("/api/job-roles", jobTemplateRoutes);
-app.get("/", (req,res) => {
+app.use("/job-roles", jobTemplateRoutes);
 
+app.get("/", (req, res) => {
     res.send("Resume Analyzer API Running...")
-
 })
 
 const PORT = process.env.PORT || 5000
 
-app.listen(PORT,()=>{
-
+app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
-
 })
