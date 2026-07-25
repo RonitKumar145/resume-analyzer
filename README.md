@@ -4,7 +4,7 @@ A full-stack **Resume Analyzer** developed as part of the **Solvrex Pvt. Ltd. Te
 
 ---
 
-## 🚀 Live Demo & Links
+## Live Demo & Links
 
 - 🌐 **Live Web Application:** [https://resume-analyzer-coral-three.vercel.app/](https://resume-analyzer-coral-three.vercel.app/)
 - ⚡ **Backend REST API:** [https://resume-analyzer-api-c2vm.onrender.com/](https://resume-analyzer-api-c2vm.onrender.com/)
@@ -29,7 +29,9 @@ A full-stack **Resume Analyzer** developed as part of the **Solvrex Pvt. Ltd. Te
 - [Tech Stack](#-tech-stack)
 - [Project Architecture](#-project-architecture)
 - [My Approach](#-my-approach)
+- [Engineering Decisions](#-engineering-decisions--thought-process)
 - [Scoring Methodology](#-scoring-methodology)
+
 - [Assumptions Made](#-assumptions-made)
 - [Project Structure](#-project-structure)
 - [Installation](#-installation)
@@ -275,7 +277,15 @@ This modular architecture also allows additional evaluation criteria to be intro
 
 ---
 
-# 📊 Scoring Methodology
+##  Engineering Decisions & Thought Process
+
+- **Deterministic Rule-Based Framework over External LLMs:** Rather than wrapping a 3rd-party LLM API (which introduces latency, API cost dependencies, rate limits, and non-deterministic scoring variations), I engineered a deterministic rule-based evaluation framework. This guarantees sub-1.5s execution, predictable and explainable scoring, and complete privacy for candidate resume data.
+- **In-Memory Parsing & Performance Optimization:** To optimize the application for serverless and cloud platforms like Render/Vercel, the backend processes PDF buffers directly in memory (`multer.memoryStorage`) with pre-compiled regex dictionaries and 3-page max parsing limits, eliminating ephemeral disk I/O bottlenecks and keeping analysis times under 1.5 seconds.
+
+---
+
+#  Scoring Methodology
+
 
 The ATS score is generated using a **deterministic rule-based evaluation engine** instead of relying entirely on external AI services.
 
