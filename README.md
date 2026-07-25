@@ -6,7 +6,10 @@ A full-stack **Resume Analyzer** developed as part of the **Solvrex Pvt. Ltd. Te
 
 ## 📸 Application Preview
 
-![Resume Analyzer Interface](./assets/dashboard-preview.png)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/RonitKumar145/resume-analyzer/main/assets/dashboard-preview.png" alt="Resume Analyzer Interface" width="100%" style="border-radius: 8px;">
+</p>
+
 
 ---
 
