@@ -9,7 +9,8 @@ import checkResumeQuality from "../helpers/resumeQualityChecker.js";
 
 const calculateATSScore = (
     resumeText,
-    requiredSkills = []
+    requiredSkills = [],
+    targetRole = ""
 ) => {
 
     const parsedResume = parseResume(resumeText);
@@ -17,7 +18,7 @@ const calculateATSScore = (
     const contact = checkContactInformation(parsedResume);
     const education = checkEducation(parsedResume);
     const skills = checkSkills(parsedResume, requiredSkills);
-    const experience = checkExperience(parsedResume);
+    const experience = checkExperience(parsedResume, targetRole, requiredSkills);
     const projects = checkProjects(parsedResume);
     const quality = checkResumeQuality(parsedResume);
 

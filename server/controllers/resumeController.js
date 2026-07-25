@@ -33,7 +33,8 @@ const uploadResume = async (req, res) => {
         // Calculate ATS Score
         const atsResult = calculateATSScore(
             resumeText,
-            parsedJob.requiredSkills || []
+            parsedJob.requiredSkills || [],
+            parsedJob.title || selectedRole || ""
         );
 
         // Compare Resume with Job
