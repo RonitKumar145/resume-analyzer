@@ -99,7 +99,7 @@ const ResumeForm = () => {
     };
 
     const postResumeUpload = async (formData, isRetry = false) => {
-        const coldStartTimer = setTimeout(() => setIsColdStart(true), 2000);
+        const coldStartTimer = setTimeout(() => setIsColdStart(true), 4500);
 
         try {
             const response = await api.post("/resume/upload", formData);
@@ -122,6 +122,8 @@ const ResumeForm = () => {
                 error.response?.data?.message ||
                 "Failed to analyze your resume after retrying. Please try again."
             );
+        } finally {
+            clearTimeout(coldStartTimer);
         }
     };
 
